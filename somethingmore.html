@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Learning Objects</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      //modell
+      function text(color, size, texto, emoji) {
+          this.color = color,
+          this.size = size,
+          this.texto = texto,
+          this.emoji = emoji + ' -- (click me)';
+          this.textupdated = false;
+          
+          this.updateSize = function () {
+          this.size +=10;
+          this.emoji = emoji + '--(size updated)'
+        };
+      }
+
+      let text1 = new text("green", 30, "This is your FIRST obejct text","&#129409");
+      let text2 = new text("blue", 34, "This is your SECOND obejct text","&#128018");
+      let text3 = new text("red", 38, "This is your THIRD obejct text","&#127940");
+      let text4 = new text("purple", 42, "This is your FOURTH obejct text ","&#128051");
+      let input = new text("", "", "", "", "");
+
+      const model = { input, objectArray: [text1, text2, text3, text4 ] };
+
+      //view
+      updateView();
+      function updateView() {
+        let html = "";
+
+        for (let i = 0; i < model.objectArray.length; i++) {
+          html += `<br><div onclick="clickMe(${i})" style="color:${model.objectArray[i].color}; font-size:${model.objectArray[i].size}px">
+             ${model.objectArray[i].texto}${model.objectArray[i].emoji}</div> `;
+        }
+
+        html += `<br><hr>Color <input type="text" oninput ="model.input.color = this.value">
+            Text size <input type="number" oninput ="model.input.size = this.value">
+            Write your text <input type="text"  oninput ="model.input.texto = this.value">
+            Paste an emoji <input type="text"  oninput ="model.input.emoji = this.value">
+            <button onclick="addNew()">legg til</button>`;
+
+        document.getElementById("app").innerHTML = html;
+      }
+
+      //controller
+      function addNew() {
+         //model.objectArray.push({
+          //color: model.input.color,
+          // size: parseInt(model.input.size),
+          // texto: model.input.texto,
+          //emoji: model.input.emoji +  ' -- (click me)',//
+         // textupdated : false,
+         //updateSize : function () {
+          ////this.size +=10;
+          //this.emoji =  this.emoji + '--(size updated)'
+       // }
+         
+         // }
+
+       // );
+
+        model.objectArray.push(new text(model.input.color, parseInt(model.input.size), model.input.texto, model.input.emoji));
+        updateView();
+      }
+
+      function clickMe(index){
+        if(!model.objectArray[index].textupdated) { 
+            model.objectArray[index].textupdated = true;
+
+          console.log('it was clicked')
+            
+            model.objectArray[index].updateSize()
+        updateView();
+
+        }
+    }
+    </script>
+  </body>
+</html>
